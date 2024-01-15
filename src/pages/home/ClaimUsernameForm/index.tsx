@@ -18,18 +18,16 @@ const claimUsernameFormSchema = z.object({
 type ClaimUsernameFormData = z.infer<typeof claimUsernameFormSchema>
 
 export function ClaimUsernameForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm<ClaimUsernameFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ClaimUsernameFormData>({
         resolver: zodResolver(claimUsernameFormSchema)
     })
 
     const router = useRouter()
 
     async function handleClaimUsername(data: ClaimUsernameFormData) {
-        // const { username } = data
+        const { username } = data
 
-        // await router.push()
-
-        console.log(data)
+        await router.push(`/register?username=${username}`)
     }
 
     return (
@@ -44,6 +42,7 @@ export function ClaimUsernameForm() {
                 <Button
                     size="sm"
                     type="submit"
+                    disabled={isSubmitting}
                 >
                     Reservar
                     <ArrowRight />
