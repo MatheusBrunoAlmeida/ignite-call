@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { api } from "../../../../../lib/axios";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import ReactLoading from 'react-loading';
 
 interface Availability {
     possibleTimes: number[],
@@ -59,17 +60,25 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
                     </TimePickerHeader>
 
                     <TimePickerList>
-                        {availability?.possibleTimes.map((hour: any) => {
-                            return (
-                                <TimePickerItem
-                                    key={hour}
-                                    onClick={() => handleSlectTime(hour)}
-                                    disabled={!availability.availableTimes.includes(hour)}
-                                >
-                                    {String(hour).padStart(2, '0')}:00h
-                                </TimePickerItem>
-                            )
-                        })}
+                        {availability?.possibleTimes ? (
+                            availability?.possibleTimes.map((hour: any) => {
+                                return (
+                                    <TimePickerItem
+                                        key={hour}
+                                        onClick={() => handleSlectTime(hour)}
+                                        disabled={!availability.availableTimes.includes(hour)}
+                                    >
+                                        {String(hour).padStart(2, '0')}:00h
+                                    </TimePickerItem>
+                                )
+                            })
+                        ) : (
+                            <>
+                                <div style={{width: '100%', height: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <ReactLoading type={'spin'} color={'white'} height={30} width={30} />
+                                </div>
+                            </>
+                        )}
                     </TimePickerList>
                 </TimePicker>
             )}
